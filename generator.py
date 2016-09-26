@@ -19,16 +19,16 @@ import sys
 text = open('corpora.txt').read().lower()
 print('corpus length:', len(text))
 
-chars       = sorted(list(set(text)))
+chars        = sorted(list(set(text)))
 char_indices = dict((c, i) for i, c in enumerate(chars))
 indices_char = dict((i, c) for i, c in enumerate(chars))
 
 print('total chars:', len(chars))
 
 # cut the text in semi-redundant sequences of maxlen characters
-maxlen = 20
-step = 3
-sentences = []
+maxlen     = 20
+step       = 3
+sentences  = []
 next_chars = []
 
 for i in range(0, len(text) - maxlen, step):
@@ -84,12 +84,12 @@ for iteration in range(1, 30):
 
     for diversity in [0.5]:
         print()
-        print('----- diversity:', diversity)
+        print('diversity:', diversity)
 
-        generated = ''
-        sentence = text[start_index: start_index + maxlen]
+        generated  = ''
+        sentence   = text[start_index: start_index + maxlen]
         generated += sentence
-        print('----- Generating with seed: "' + sentence + '"')
+        print('Seed Sequence: "' + sentence + '"')
         sys.stdout.write(generated)
 
         for i in range(400):
@@ -97,12 +97,12 @@ for iteration in range(1, 30):
             for t, char in enumerate(sentence):
                 x[0, t, char_indices[char]] = 1.
 
-            preds = model.predict(x, verbose=0)[0]
+            preds      = model.predict(x, verbose=0)[0]
             next_index = sample(preds, diversity)
-            next_char = indices_char[next_index]
+            next_char  = indices_char[next_index]
 
             generated += next_char
-            sentence = sentence[1:] + next_char
+            sentence   = sentence[1:] + next_char
 
             sys.stdout.write(next_char)
             sys.stdout.flush()
